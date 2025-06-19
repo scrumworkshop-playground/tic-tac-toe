@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe Game - Brno Scrum Workshop</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Background Pattern -->
+    <div class="bg-pattern"></div>
+    
+    <div class="container">
+        <!-- Workshop Banner -->
+        <div class="workshop-banner">
+            <h1 class="banner-title">🚀 Brno Scrum Workshop 🚀</h1>
+            <p class="banner-subtitle">Interactive Tic Tac Toe Challenge</p>
+        </div>
+
+        <header>
+            <h1>🎮 Tic Tac Toe</h1>
+            
+            <!-- Game Mode Selection -->
+            <div class="game-mode-selector">
+                <h3>Select Game Mode:</h3>
+                <div class="mode-buttons">
+                    <button id="humanVsHuman" class="mode-btn active">👥 Human vs Human</button>
+                    <button id="humanVsAI" class="mode-btn">🤖 Human vs AI</button>
+                </div>
+                <div class="ai-difficulty" id="aiDifficulty" style="display: none;">
+                    <h4>AI Difficulty:</h4>
+                    <div class="difficulty-buttons">
+                        <button id="easyAI" class="difficulty-btn active">😊 Easy</button>
+                        <button id="mediumAI" class="difficulty-btn">🤔 Medium</button>
+                        <button id="hardAI" class="difficulty-btn">🔥 Hard</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-info">
+                <div class="score-board">
+                    <div class="score">
+                        <span class="player-label" id="player1Label">Player X</span>
+                        <span class="score-value" id="scoreX">0</span>
+                    </div>
+                    <div class="score">
+                        <span class="player-label" id="player2Label">Player O</span>
+                        <span class="score-value" id="scoreO">0</span>
+                    </div>
+                    <div class="score">
+                        <span class="player-label">Draws</span>
+                        <span class="score-value" id="scoreDraw">0</span>
+                    </div>
+                </div>
+                <div class="current-player">
+                    <span id="currentPlayerText">Player X's Turn</span>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <div class="game-board" id="gameBoard">
+                <div class="cell" data-index="0"></div>
+                <div class="cell" data-index="1"></div>
+                <div class="cell" data-index="2"></div>
+                <div class="cell" data-index="3"></div>
+                <div class="cell" data-index="4"></div>
+                <div class="cell" data-index="5"></div>
+                <div class="cell" data-index="6"></div>
+                <div class="cell" data-index="7"></div>
+                <div class="cell" data-index="8"></div>
+            </div>
+
+            <div class="game-controls">
+                <button id="resetBtn" class="btn btn-secondary">Reset Game</button>
+                <button id="newGameBtn" class="btn btn-primary">New Game</button>
+            </div>
+
+            <div class="game-status" id="gameStatus"></div>
+        </main>
+
+        <footer>
+            <p>🎯 First to get 3 in a row wins! 🏆</p>
+            <p class="workshop-footer">Built for Brno Scrum Workshop 2024</p>
+        </footer>
+    </div>
+
+    <!-- Game Over Modal -->
+    <div class="modal" id="gameModal">
+        <div class="modal-content">
+            <h2 id="modalTitle">Game Over!</h2>
+            <p id="modalMessage">Player X Wins!</p>
+            <div class="modal-buttons">
+                <button id="playAgainBtn" class="btn btn-primary">Play Again</button>
+                <button id="closeModalBtn" class="btn btn-secondary">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
