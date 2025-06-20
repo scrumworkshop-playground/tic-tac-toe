@@ -1,0 +1,86 @@
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #6dd5ed, #2193b0);
+    color: white;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+    margin: 0;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: calc(100vh - 80px); /* Full height minus header */
+}
+
+.game-board {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    gap: 5px;
+}
+
+.cell {
+    width: 100px;
+    height: 100px;
+    background-color: white;
+    border: 2px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 50px;
+    cursor: pointer;
+}
+
+.cell.x, .cell.o {
+    cursor: not-allowed;
+}
+
+.cell.x::before {
+    content: 'X';
+    color: #b02121;
+}
+
+.cell.o::before {
+    content: 'O';
+    color: #213ab0;
+}
+
+.winning-message {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.9);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 5rem;
+}
+
+.winning-message.show {
+    display: flex;
+}
+
+#restartButton {
+    font-size: 2rem;
+    padding: 10px 20px;
+    margin-top: 20px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+} 
