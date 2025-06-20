@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brno Scrum Workshop - Tic Tac Toe</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .banner {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .banner h1 {
+            margin: 0;
+            color: #333;
+            text-align: center;
+        }
+
+        .game-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .status {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .cell {
+            width: 100px;
+            height: 100px;
+            border: 3px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: bold;
+            cursor: pointer;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+
+        .cell:hover {
+            background: #e9ecef;
+            transform: scale(1.05);
+        }
+
+        .cell.x {
+            color: #dc3545;
+        }
+
+        .cell.o {
+            color: #007bff;
+        }
+
+        .controls {
+            text-align: center;
+        }
+
+        .new-game-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .new-game-btn:hover {
+            background: #218838;
+        }
+
+        .ai-toggle {
+            margin-top: 15px;
+        }
+
+        .ai-toggle label {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .ai-toggle input[type="checkbox"] {
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="banner">
+        <h1>🎮 Brno Scrum Workshop 🎮</h1>
+    </div>
+
+    <div class="game-container">
+        <div class="status" id="status">Player X's turn</div>
+        
+        <div class="board" id="board">
+            <div class="cell" data-index="0"></div>
+            <div class="cell" data-index="1"></div>
+            <div class="cell" data-index="2"></div>
+            <div class="cell" data-index="3"></div>
+            <div class="cell" data-index="4"></div>
+            <div class="cell" data-index="5"></div>
+            <div class="cell" data-index="6"></div>
+            <div class="cell" data-index="7"></div>
+            <div class="cell" data-index="8"></div>
+        </div>
+
+        <div class="controls">
+            <button class="new-game-btn" onclick="newGame()">New Game</button>
+            <div class="ai-toggle">
+                <label for="aiMode">Play against AI:</label>
+                <input type="checkbox" id="aiMode" onchange="toggleAI()">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let board = ['', '', '', '', '', '', '', '', ''];
+        let currentPlayer = 'X';
+        let gameActive = true;
+        let aiMode = false;
+
+        const winningCombinations = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+            [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+            [0, 4, 8], [2, 4, 6] // Diagonals
+        ];
+
+        function makeMove(index) {
+            if (board[index] === '' && gameActive) {
+                board[index] = currentPlayer;
+                updateCell(index);
+                
+                if (checkWin()) {
+                    document.getElementById('status').textContent = `Player ${currentPlayer} wins!`;
+                    gameActive = false;
+                    return;
+                }
+                
+                if (checkDraw()) {
+                    document.getElementById('status').textContent = "It's a draw!";
+                    gameActive = false;
+                    return;
+                }
+                
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                document.getElementById('status').textContent = `Player ${currentPlayer}'s turn`;
+                
+                // AI move if enabled and it's AI's turn
+                if (aiMode && currentPlayer === 'O' && gameActive) {
+                    setTimeout(makeAIMove, 500);
+                }
+            }
+        }
+
+        function updateCell(index) {
+            const cell = document.querySelector(`[data-index="${index}"]`);
+            cell.textContent = board[index];
+            cell.classList.add(board[index].toLowerCase());
+        }
+
+        function checkWin() {
+            return winningCombinations.some(combination => {
+                return combination.every(index => {
+                    return board[index] === currentPlayer;
+                });
+            });
+        }
+
+        function checkDraw() {
+            return board.every(cell => cell !== '');
+        }
+
+        function newGame() {
+            board = ['', '', '', '', '', '', '', '', ''];
+            currentPlayer = 'X';
+            gameActive = true;
+            
+            // Clear all cells
+            document.querySelectorAll('.cell').forEach(cell => {
+                cell.textContent = '';
+                cell.classList.remove('x', 'o');
+            });
+            
+            document.getElementById('status').textContent = `Player ${currentPlayer}'s turn`;
+        }
+
+        function toggleAI() {
+            aiMode = document.getElementById('aiMode').checked;
+            if (aiMode && currentPlayer === 'O' && gameActive) {
+                setTimeout(makeAIMove, 500);
+            }
+        }
+
+        function makeAIMove() {
+            if (!gameActive || currentPlayer !== 'O') return;
+            
+            // Simple AI: find first empty cell
+            const emptyCells = board.map((cell, index) => cell === '' ? index : -1).filter(index => index !== -1);
+            
+            if (emptyCells.length > 0) {
+                // Try to win first
+                for (let cell of emptyCells) {
+                    board[cell] = 'O';
+                    if (checkWin()) {
+                        makeMove(cell);
+                        return;
+                    }
+                    board[cell] = '';
+                }
+                
+                // Try to block player's win
+                for (let cell of emptyCells) {
+                    board[cell] = 'X';
+                    if (checkWin()) {
+                        board[cell] = '';
+                        makeMove(cell);
+                        return;
+                    }
+                    board[cell] = '';
+                }
+                
+                // Make a strategic move or random move
+                const strategicMoves = [4, 0, 2, 6, 8, 1, 3, 5, 7]; // Center, corners, edges
+                for (let move of strategicMoves) {
+                    if (emptyCells.includes(move)) {
+                        makeMove(move);
+                        return;
+                    }
+                }
+            }
+        }
+
+        // Add click event listeners to all cells
+        document.querySelectorAll('.cell').forEach(cell => {
+            cell.addEventListener('click', () => {
+                const index = parseInt(cell.getAttribute('data-index'));
+                makeMove(index);
+            });
+        });
+    </script>
+</body>
+</html>
